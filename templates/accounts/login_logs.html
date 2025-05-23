@@ -1,0 +1,151 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} User Table {% endblock %} 
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} {% endblock body_class %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/fontawesome-free/css/all.min.css') }}">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/adminlte.min.css') }}">
+
+{% endblock stylesheets %}
+c
+{% block content %} 
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Users Login Info</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Logged In Users</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Users</th>
+                    <th>IP Address</th>
+                    <th>Login Time</th>
+                    <th>User Agent</th>
+                    <th>Successfull</th>
+                    <th>Actions</th>
+                  </thead>
+                  <tbody>
+                    {% for log in login_logs %}
+                    <tr>
+                        <td>{{ log.id }}</td>
+                        <td>{{ log.user.username }}</td>
+                        <td>{{ log.ip_address }}</td>
+                        <td>{{ log.login_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ log.user_agent }}</td>
+                        <td>
+                            {% if log.successful %}
+                            <span class="badge badge-success">Yes</span>
+                            {% else %}
+                            <span class="badge badge-danger">No</span>
+                            {% endif %}
+                        </td>
+                          <td>
+                            <form action="{{ url_for('authentication_blueprint.delete_login_log', log_id=log.id) }}" method="post" style="display:inline;">
+                                 {{ form.hidden_tag() }}
+                                <button type="submit" class="btn btn-danger "  onclick="return confirm('Are you sure you want to delete this log?');">
+                                  <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+               </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Blog Posts with default features</h3>
+              </div>
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>id</th>
+                    <th> Username </th>
+                    <th>Email</th>
+                    <th>Password</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>id</th>
+                    <th> Username </th>
+                    <th>Email</th>
+                    <th>Password</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div> -->
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="{{ url_for('static', filename='assets/plugins/jquery/jquery.min.js') }}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{{ url_for('static', filename='assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <!-- DataTables -->
+  <script src="{{ url_for('static', filename='assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+  <!-- AdminLTE App -->
+  <script src="{{ url_for('static', filename='assets/js/adminlte.min.js') }}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="{{ url_for('static', filename='assets/js/demo.js') }}"></script>
+  <!-- page script -->
+ 
+
+{% endblock javascripts %}
